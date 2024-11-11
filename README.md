@@ -1,5 +1,7 @@
 Documentation du Projet : Application de Restauration
+
 Introduction : 
+
 L'application de restauration repose sur une architecture microservices, où chaque module correspond à une fonctionnalité spécifique. Les microservices sont construits avec Spring Boot, et un microservice supplémentaire est développé avec Node.js et MongoDB pour gérer les utilisateurs.
 
 L'application a été conteneurisée à l'aide de Docker Compose pour une gestion simplifiée des services, et sécurisée via Keycloak pour gérer l'authentification et l'autorisation.
