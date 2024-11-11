@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+
+  # GestionCommande Service
+  GestionCommande:
+    container_name: commandee
+    image: commandems
+    build: ./GestionCommande
+    ports:
+      - "8084:8084"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    depends_on:
+      - Eureka
+    
+
+  
+    
+
+  # Eureka Service
+  Eureka:
+    container_name: eurekaa
+    build: ./Eureka
+    hostname: serviceregistry
+    ports:
+      - "8761:8761"
+    image: eureka
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://serviceregistry:8761/eureka/
+    
+
+  
+
+  # API Gateway Service
+  api-gateway:
+    build: ./APIGateway2
+    container_name: apigateway
+    image: apigateway2
+    ports:
+      - "8095:8095"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    depends_on:
+      - Eureka
+      - GestionCommande
+      
+    
+
