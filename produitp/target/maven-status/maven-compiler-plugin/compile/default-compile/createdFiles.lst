@@ -1,0 +1,8 @@
+ms\produitp\Entities\Enums\TypeProduitPrimaire.class
+ms\produitp\Services\IProduitPrimaireServiceImp.class
+ms\produitp\Repositories\ProduitPrimaireRepository.class
+ms\produitp\RestControllers\ProduitPrimaireController.class
+ms\produitp\Entities\ProduitPrimaire.class
+ms\produitp\Entities\Enums\UniteMesure.class
+ms\produitp\ProduitpApplication.class
+ms\produitp\Services\IProduitPrimaireService.class
