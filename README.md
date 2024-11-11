@@ -1,54 +1,81 @@
-Documentation du Projet : Application de Restauration
+🍽️ Application de Restauration - Architecture Microservices
+Bienvenue dans le dépôt de l'application de restauration, construite en utilisant une architecture microservices pour gérer les différentes fonctionnalités d'un restaurant. Chaque microservice est conteneurisé via Docker et orchestré avec Docker Compose pour un déploiement simplifié.
 
-Introduction : 
+📑 Table des matières
+Aperçu de l'Architecture
+Services et Microservices
+Technologies Utilisées
+Déploiement
+Exigences Préalables
+Lancer l'Application
+Sécurité
+Conclusion
+📐 Aperçu de l'Architecture
+L'application utilise une architecture microservices où chaque module répond à un besoin spécifique :
 
-L'application de restauration repose sur une architecture microservices, où chaque module correspond à une fonctionnalité spécifique. Les microservices sont construits avec Spring Boot, et un microservice supplémentaire est développé avec Node.js et MongoDB pour gérer les utilisateurs.
+Spring Boot pour les microservices principaux
+Node.js et MongoDB pour le microservice de gestion des utilisateurs
+Keycloak pour l'authentification et l'autorisation
+Docker Compose pour une gestion simplifiée des conteneurs
+Les microservices sont interconnectés pour gérer les réclamations, les livraisons, les commandes, le stock, et les menus du restaurant.
 
-L'application a été conteneurisée à l'aide de Docker Compose pour une gestion simplifiée des services, et sécurisée via Keycloak pour gérer l'authentification et l'autorisation.
+📦 Services et Microservices
+Microservices Spring Boot
+Microservice	Base de données	Fonctionnalité
+Reclamation	H2	Gestion des réclamations clients
+GestionStock	MySQL	Gestion des stocks
+GestionLivraison	H2	Suivi des livraisons
+GestionCommandes	H2	Gestion des commandes clients
+GestionMenu	MySQL	Gestion des menus du restaurant
+API Gateway	-	Redirection des requêtes vers les services
+Eureka	-	Service de découverte des microservices
+Communication entre Microservices
+Livraison <-> Commandes : Coordination pour les commandes en attente de livraison
+Livraison <-> Réclamations : Consultation des réclamations liées aux commandes
+Microservice User (Node.js)
+Base de données : MongoDB
+Fonction : Gestion des informations utilisateurs
+Microservice ConfigServer
+Centralise les configurations pour tous les microservices, facilitant ainsi la gestion des paramètres.
 
-Architecture de l'Application : 
-
-1. Microservices Spring Boot
-L'application se compose de sept microservices principaux, chacun ayant une fonctionnalité spécifique :
-
-Microservice Reclamation : Utilise une base de données H2 pour gérer les réclamations des clients.
-Microservice GestionStock : Gère les stocks des produits avec une base de données MySQL.
-Microservice GestionLivraison : Suivi des livraisons, utilisant H2 comme base de données.
-Microservice GestionCommandes : Gère les commandes des clients avec une base de données H2.
-Microservice GestionMenu : Gère les menus du restaurant, avec MySQL comme base de données.
-Microservice API Gateway : Sert de passerelle pour rediriger les requêtes vers les microservices appropriés.
-Microservice Eureka : Implémente le service de découverte d'instances, permettant de gérer les microservices en fonction de leur état d'exécution.
-
-2. Communication entre Microservices
-Communication entre Livraison et Commandes : Le microservice de livraison interagit avec le microservice de gestion des commandes pour récupérer les commandes en attente de livraison.
-Communication entre Livraison et Reclamation : Le microservice de livraison peut récupérer les réclamations associées à une commande en consultant le microservice de réclamations.
-
-4. Microservice ConfigServer
-Le microservice ConfigServer centralise toutes les configurations nécessaires pour les microservices de l'application, permettant ainsi une gestion plus flexible et centralisée des paramètres de configuration.
-
-5. Sécurité avec Keycloak
-Keycloak est utilisé pour sécuriser l'application. L'API Gateway interagit avec Keycloak pour générer un token d'accès pour les utilisateurs. Ce token est utilisé pour authentifier et autoriser l'accès aux autres microservices.
-
-6. Microservice User (Node.js)
-Un microservice User a été développé en Node.js avec MongoDB pour gérer les informations des utilisateurs. Ce microservice permet d'enregistrer et de gérer les utilisateurs de l'application.
-
-7. Conteneurisation avec Docker
-L'application a été conteneurisée en utilisant Docker Compose, permettant ainsi de faciliter le déploiement et la gestion des différents microservices et de leurs dépendances.
-
-Technologies Utilisées : 
-Spring Boot : Framework pour les microservices.
-Node.js et MongoDB : Utilisé pour le microservice User.
-Docker et Docker Compose : Conteneurisation des services.
-Keycloak : Gestion de la sécurité et de l'authentification.
-Eureka : Service de découverte d'instances.
-H2 et MySQL : Bases de données utilisées pour les différents microservices.
-
-Déploiement : 
+🛠️ Technologies Utilisées
+Spring Boot : Framework pour les microservices
+Node.js et MongoDB : Pour la gestion des utilisateurs
+Docker & Docker Compose : Pour la conteneurisation et l'orchestration des services
+Keycloak : Pour la gestion de la sécurité et de l'authentification
+Eureka : Découverte des services
+Bases de données : H2 et MySQL
+🚀 Déploiement
+Exigences Préalables
+Git : Pour cloner le dépôt
+Docker & Docker Compose : Assurez-vous que Docker est installé
 Étapes de Déploiement
--Cloner le dépôt Git contenant les microservices.
--Configurer Docker Compose pour lancer tous les services.
--Vérifier la configuration de Keycloak pour la gestion des utilisateurs et des tokens d'accès.
--Lancer les microservices via Docker Compose pour un déploiement local ou en production.
+Cloner le dépôt :
 
-Conclusion : 
-Ce projet montre l'utilisation de plusieurs microservices pour construire une application de gestion de restaurant moderne, sécurisée et flexible. L'architecture microservices permet une extensibilité et une indépendance de chaque module, facilitant ainsi les mises à jour et le maintien de l'application.
+bash
+Copy code
+git clone <URL_du_dépôt>
+cd <nom_du_dépôt>
+Configurer Docker Compose : Vérifiez et modifiez le fichier docker-compose.yml pour adapter les configurations selon vos besoins.
+
+Configurer Keycloak :
+
+Paramétrez les rôles, les utilisateurs et les clients.
+Vérifiez que l'API Gateway est configurée pour générer et valider les tokens.
+Démarrer l'application :
+
+bash
+Copy code
+docker-compose up -d
+Accéder aux services :
+
+Accédez à l'API Gateway via http://localhost:<port_gateway>
+Accédez à l'interface Keycloak via http://localhost:<port_keycloak>
+🔒 Sécurité avec Keycloak
+Keycloak sécurise l'application en gérant l'authentification et l'autorisation :
+
+API Gateway génère un token d'accès pour chaque utilisateur.
+Les autres microservices vérifient le token pour autoriser l'accès aux fonctionnalités.
+📋 Conclusion
+Ce projet illustre l’utilisation des microservices pour construire une application de gestion de restaurant moderne et modulaire. L’architecture est extensible et chaque module est indépendant, permettant des mises à jour et un maintien simplifiés.
+
