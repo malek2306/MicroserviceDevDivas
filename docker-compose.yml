@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  
+    
+  Reclamation:
+    container_name: reclamation
+    image: "reclamationms"
+    build: .\Reclamation
+    ports:
+      - "8090:8090"   
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://serviceregistry:8762/eureka/
+    depends_on:
+      - "Eureka"
+
+  Eureka:
+    container_name: eureka
+    build: .\Eureka
+    hostname: serviceregistry
+    ports:
+      - "8762:8762"   
+    image: "eurekams"    
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://serviceregistry:8762/eureka/
+    
+   
+  api-gateway:
+    build: .\MS_API_Gateway
+    image: "apigatewayms"
+    ports:
+      - "8093:8093"  # Port mapping pour l'API Gateway
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://serviceregistry:8762/eureka/
+    depends_on:
+      - "Eureka"
+      - "Reclamation"
+     
+      
+  
+  
+  
+    
+
+
+
+
+  
+  
