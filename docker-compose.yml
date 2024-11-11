@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+
+  Menu:
+    container_name: Menu
+    build: ./MsMenu
+    ports:
+     - "9091:9091"   
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/Menu?createDatabaseIfNotExist=true&userSSL=false&max_allowed_packet=15728640
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/     
+      
+    image: farah26/menums
+    restart: unless-stopped
+    depends_on:
+      - Eureka
+      - db-mysql
+
+  Eureka:
+    container_name: eureka
+    build: ./Eureka
+    hostname: serviceregistry
+    ports:
+      - "8761:8761"   
+    image: farah26/eureka    
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://serviceregistry:8761/eureka/
+    restart: unless-stopped
+
+  db-mysql:
+    image: "mysql:8.0.32"
+    container_name: db-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # obligatoire pour l'initialisation
+   
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    
+ 
+  api-gateway:
+    build: ./MS_API_Gateway
+    image:  farah26/apigateway
+    ports:
+      - "8093:8093"  # Port mapping pour l'API Gateway
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://serviceregistry:8761/eureka/
+    depends_on:
+      - Eureka
+      - Menu
+  keycloak:
+    image: "keycloak:23.0.0"
+    environment:
+      - KEYCLOAK_USER=farah26
+      - KEYCLOAK_PASSWORD=farah26
+      - KEYCLOAK_IMPORT=/tmp/realm-config.json  # Si vous avez une configuration pré-définie
+    ports:
+      - "9999:9999"  # Le port du container 8080 est mappé au port 9999 de l'hôte
+    volumes:
+      - ./realm-config.json:/tmp/realm-config.json  # Si vous avez un fichier de configuration local
+    command: ["start-dev", "--http-port", "9999"]
