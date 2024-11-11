@@ -1,0 +1,6 @@
+
+_
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄÞ8Å¬¤Ž¥2
+O
+java:S1611"2Remove the parentheses around the "args" parameter(£Ù€ò8È¬¤Ž¥2
+L	java:S106!"+Replace this use of System.out by a logger.(Þ“Ÿ˜þÿÿÿÿ8Ë¬¤Ž¥2

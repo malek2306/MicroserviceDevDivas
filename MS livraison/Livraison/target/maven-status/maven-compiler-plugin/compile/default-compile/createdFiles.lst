@@ -1,0 +1,6 @@
+com\microservice\livraison\Entities\Livraison.class
+com\microservice\livraison\Entities\StatusLivraison.class
+com\microservice\livraison\LivraisonApplication.class
+com\microservice\livraison\Repositories\LivraisonRepository.class
+com\microservice\livraison\Controller\LivraisonRestAPI.class
+com\microservice\livraison\Services\LivraisonService.class
